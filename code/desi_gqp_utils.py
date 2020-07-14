@@ -42,11 +42,13 @@ def read_simple_templates(velscale, lamrange):
  
     #flux_bulge = flux_bulge[mask]
     model1, logLam1, velscale_out = util.log_rebin([lamrange[0], lamrange[1]], flux_bulge, velscale=velscale)
-    model1 /= np.median(model1)
+    norm1 = np.median(model1)
+    model1 /= norm1
     print(velscale, velscale_out)
     #flux_disk = flux_disk[mask]
     model2, logLam2, velscale_out = util.log_rebin([lamrange[0], lamrange[1]], flux_disk, velscale=velscale)
-    model2 /= np.median(model2)
+    norm2 = np.median(model2)
+    model2 /= norm2
     print(velscale, velscale_out)
     
     #print([wave[0], wave[-1]])
@@ -69,7 +71,7 @@ def read_simple_templates(velscale, lamrange):
     plt.plot(np.exp(1)**logLam1, model1)
     plt.plot(np.exp(1)**logLam2, model2)
            
-    return (logLam1, templates)
+    return (logLam1, templates, [norm1, norm2])
 
 #returns SSP templates for given age and metallicity using FSPS models (MILES library)
 def make_ssp_templates_fsps(velscale, lamrange,ages, metallicities):
